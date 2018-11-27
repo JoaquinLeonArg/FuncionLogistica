@@ -6,7 +6,7 @@ r = float(input('Ingrese r[0.3]: '))
 K = float(input('Ingrese K[10]: '))
 P0 = float(input('Ingrese P0[1]: '))
 rango_x = int(input('Ingrese rango a mostrar[40]: '))
-delta_t = int(input('Ingrese intervalo de discretización[1]: '))
+delta_t = float(input('Ingrese intervalo de discretización[1]: '))
 t = np.arange(0, rango_x, delta_t)
 
 def funcion(r, K, P):  # Ecuación diferencial logística (P'(t) = dP/dt)
@@ -14,7 +14,11 @@ def funcion(r, K, P):  # Ecuación diferencial logística (P'(t) = dP/dt)
 
 def metodo_adelantado():  # Método adelantado
     f = [P0]  # Condiciones iniciales
-    for x in range(rango_x-1):
+    if delta_t > 1:
+        rango = int((rango_x-1)/delta_t)
+    else:
+        rango = int(rango_x / delta_t) - 1
+    for x in range(rango):
         p_n = f[-1]  # Asignar P(t)
         p_prima = funcion(r, K, p_n)
         p_nsig = p_n + delta_t*p_prima  # Calcular P(t+1) = P(t) + P(t).deltaT.P'(t)
@@ -23,7 +27,11 @@ def metodo_adelantado():  # Método adelantado
 
 def metodo_atrasado():  # Método atrasado
     f = [P0]  # Condiciones iniciales
-    for x in range(rango_x-1):
+    if delta_t > 1:
+        rango = int((rango_x-1)/delta_t)
+    else:
+        rango = int(rango_x / delta_t) - 1
+    for x in range(rango):
         p_n = f[-1]  # Asignar P(t)
         p_prima = funcion(r, K, p_n)
         p_nsig = p_n + delta_t*p_prima  # Calcular P*(t+1) = P(t) + P(t).deltaT.P'(t)
